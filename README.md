@@ -1,4 +1,5 @@
 # Welcome
+**NOTE**
 I was meaning to make a pull request on the official Samra repo, but after noticing that they don't seem to have merged some others, I'm just putting this up here until I figure out swift development enough to truly fork and produce my own builds. (And hopefully get changes merged someday!)
 
 There are completions for this tool as well! You'll have to move them to their respective directories, and I've only tested fish completions. Enjoy!
