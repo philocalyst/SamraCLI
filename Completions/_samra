@@ -1,0 +1,79 @@
+# Zsh completion for Asset Catalog CLI tool
+# Save this file to one of your $fpath directories, for example:
+# ~/.zsh/completions/_samra
+
+# typeset -A opt_args # Unused, removed
+
+_samra() {
+    local -a commands options
+
+    commands=(
+        'list:Lists all renditions in the asset catalog'
+        'delete:Deletes a rendition from the asset catalog'
+        'add:Adds a new rendition (not implemented yet)'
+        'edit:Edits an existing rendition'
+        'extract:Extract renditions from the asset catalog'
+    )
+
+    options=(
+        '(-i --input)'{-i,--input}'[Specify input .car file path]:car file:_files -g "*.car"'
+        '(-r --rendition)'{-r,--rendition}'[Specify rendition name to operate on]:rendition name:'
+        '(-o --output)'{-o,--output}'[Specify output path for extracted assets]:output directory:_files -/'
+        '(-h --help)'{-h,--help}'[Show help information]'
+        '(-v --version)'{-v,--version}'[Show version information]'
+    )
+
+    _arguments -C \
+        '1: :->command' \
+        '*: :->args' \
+        && return 0
+
+    case $state in
+        command)
+            _describe 'command' commands
+            ;;
+        args)
+            case ${words[2]} in
+                list)
+                    _arguments \
+                        '(-i --input)'{-i,--input}'[Specify input .car file path]:car file:_files -g "*.car"' \
+                        '(-h --help)'{-h,--help}'[Show help information]' \
+                        '(-v --version)'{-v,--version}'[Show version information]'
+                    ;;
+                delete)
+                    _arguments \
+                        '(-i --input)'{-i,--input}'[Specify input .car file path]:car file:_files -g "*.car"' \
+                        '(-r --rendition)'{-r,--rendition}'[Specify rendition name to delete]:rendition name:' \
+                        '(-h --help)'{-h,--help}'[Show help information]' \
+                        '(-v --version)'{-v,--version}'[Show version information]'
+                    ;;
+                add)
+                    _arguments \
+                        '(-i --input)'{-i,--input}'[Specify input .car file path]:car file:_files -g "*.car"' \
+                        '(-h --help)'{-h,--help}'[Show help information]' \
+                        '(-v --version)'{-v,--version}'[Show version information]'
+                    ;;
+                edit)
+                    _arguments \
+                        '(-i --input)'{-i,--input}'[Specify input .car file path]:car file:_files -g "*.car"' \
+                        '(-r --rendition)'{-r,--rendition}'[Specify rendition=newvalue]:rendition=newvalue:' \
+                        '(-h --help)'{-h,--help}'[Show help information]' \
+                        '(-v --version)'{-v,--version}'[Show version information]'
+                    ;;
+                extract)
+                    _arguments \
+                        '(-i --input)'{-i,--input}'[Specify input .car file path]:car file:_files -g "*.car"' \
+                        '(-r --rendition)'{-r,--rendition}'[Specify rendition name to extract]:rendition name:' \
+                        '(-o --output)'{-o,--output}'[Specify output path for extracted assets]:output directory:_files -/' \
+                        '(-h --help)'{-h,--help}'[Show help information]' \
+                        '(-v --version)'{-v,--version}'[Show version information]'
+                    ;;
+                *)
+                    _arguments "$options[@]"
+                    ;;
+            esac
+            ;;
+    esac
+}
+
+_samra "$@"
